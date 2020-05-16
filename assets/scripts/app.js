@@ -1,7 +1,7 @@
 const listElement = document.querySelector('.posts');
 const postTemplate = document.getElementById('single-post');
 
-function sendHttpRequest(method, url) {
+function sendHttpRequest(method, url, data) {
 	const promise = new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
 
@@ -12,7 +12,7 @@ function sendHttpRequest(method, url) {
 			resolve(xhr.response);
 		};
 
-		xhr.send();
+		xhr.send(JSON.stringify(data));
 	});
 	return promise;
 }
@@ -32,4 +32,16 @@ async function fetchPost() {
 	}
 }
 
+async function createPost(title, content) {
+	const userId = Math.random();
+	const post = {
+		title: title,
+		body: content,
+		userId: userId,
+	};
+
+	sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', post);
+}
+
 fetchPost();
+createPost('MANIAC', 'A exellent work done by designers and developers...');
